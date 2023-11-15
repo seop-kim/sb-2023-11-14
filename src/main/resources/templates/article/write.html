@@ -1,0 +1,42 @@
+<form method="POST" onsubmit="submitWriteForm(this); return false;"
+      style="display: flex; flex-direction: column; gap:20px; max-width:500px;">
+    <input type="text" name="title" placeholder="제목">
+
+    <input type="text" name="body" placeholder="내용">
+
+    <!-- javascript:; 는 아무것도 하지 않는다는 뜻 -->
+    <button type="submit">
+        글쓰기
+    </button>
+
+    <input onclick="$(this).closest('form').attr('action','/article/write2')" type="submit" value="글쓰기">
+</form>
+
+<script>
+    function submitWriteForm(form) {
+        const inputTitle = form.title;
+        const inputBody = form.body;
+
+        inputTitle.value = inputTitle.value.trim();
+        inputBody.value = inputBody.value.trim();
+
+        const title = inputTitle.value;
+        const body = inputBody.value;
+
+        if (title.length == 0) {
+            alert('제목을 입력해주세요.');
+            inputTitle.focus();
+
+            return;
+        }
+
+        if (body.length == 0) {
+            alert('내용을 입력해주세요.');
+            inputBody.focus();
+
+            return;
+        }
+
+        form.submit();
+    }
+</script>
