@@ -18,4 +18,9 @@ public class Article {
         this.title = title;
         this.body = body;
     }
+
+    public void articleUpdate(String title, String body) {
+        this.title = title;
+        this.body = body;
+    }
 }

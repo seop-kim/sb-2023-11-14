@@ -49,12 +49,38 @@ public class ArticleController {
         return "/article/list";
     }
 
+    // article detail
     @GetMapping("/article/detail/{id}")
     String showDetail(@PathVariable("id") Long id, Model model) {
         Optional<Article> findOne = articleService.findById(id);
         Article article = findOne.get();
         model.addAttribute("article", article);
         return "/article/detail";
+    }
+
+    // delete
+    @GetMapping("/article/delete/{id}")
+    String articleDel(@PathVariable Long id) {
+        articleService.delete(id);
+
+        String msg = "id %d, article deleted".formatted(id);
+
+        return "redirect:/article/list?msg=" + msg;
+    }
+
+    @GetMapping("/article/modify/{id}")
+    String modifyForm(@PathVariable Long id, Model model) {
+        Optional<Article> findOne = articleService.findById(id);
+        Article article = findOne.get();
+        model.addAttribute("article", article);
+        return "/article/modify";
+    }
+
+    @PostMapping("/article/modify")
+    String modify(@Valid ModifyForm form) {
+        articleService.modify(form);
+        String msg = "article modify";
+        return "redirect:/article/detail/%d?msg=".formatted(form.getId()) + msg;
     }
 
 
@@ -106,9 +132,22 @@ public class ArticleController {
         @NotBlank(message = "title is not null")
         @NotNull
         private String title;
+
         @NotBlank(message = "body is not null")
         @NotNull
         private String body;
+    }
 
+    @Data
+    public static class ModifyForm {
+        private Long id;
+
+        @NotBlank(message = "title is not null")
+        @NotNull
+        private String title;
+
+        @NotBlank(message = "body is not null")
+        @NotNull
+        private String body;
     }
 }

@@ -1,5 +1,6 @@
 package com.ll.sb20231114.domain.article.service;
 
+import com.ll.sb20231114.domain.article.controller.ArticleController.ModifyForm;
 import com.ll.sb20231114.domain.article.entity.Article;
 import com.ll.sb20231114.domain.article.repository.ArticleRepository;
 import java.util.List;
@@ -30,5 +31,16 @@ public class ArticleService {
 
     public Optional<Article> findById(Long id) {
         return articleRepository.findById(id);
+    }
+
+    public void delete(Long id) {
+        articleRepository.delete(id);
+    }
+
+    public void modify(ModifyForm form) {
+        Optional<Article> findOne = findById(form.getId());
+        Article article = findOne.get();
+
+        article.articleUpdate(form.getTitle(), form.getBody());
     }
 }

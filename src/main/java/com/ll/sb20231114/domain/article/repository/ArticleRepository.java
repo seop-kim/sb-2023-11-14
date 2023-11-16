@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class ArticleRepository {
-    private final List<Article> articles = new ArrayList<>(){{
-        add(new Article(1L,"title1", "content1"));
-        add(new Article(2L,"title2", "content2"));
-        add(new Article(3L,"title3", "content3"));
+    private final List<Article> articles = new ArrayList<>() {{
+        add(new Article(1L, "title1", "content1"));
+        add(new Article(2L, "title2", "content2"));
+        add(new Article(3L, "title3", "content3"));
     }};
 
     public Article save(Article article) {
@@ -39,5 +39,9 @@ public class ArticleRepository {
         return articles.stream()
                 .filter(article -> article.getId() == id)
                 .findFirst();
+    }
+
+    public void delete(Long id) {
+        articles.removeIf(article -> article.getId() == id);
     }
 }
