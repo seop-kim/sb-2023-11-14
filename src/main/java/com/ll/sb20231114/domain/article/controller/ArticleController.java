@@ -50,13 +50,11 @@ public class ArticleController {
     }
 
     @GetMapping("/article/detail/{id}")
-    String showDetail(@PathVariable("id") Long id) {
+    String showDetail(@PathVariable("id") Long id, Model model) {
         Optional<Article> findOne = articleService.findById(id);
         Article article = findOne.get();
-
+        model.addAttribute("article", article);
         return "/article/detail";
-
-
     }
 
 
