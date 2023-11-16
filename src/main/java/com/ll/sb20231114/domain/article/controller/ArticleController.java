@@ -26,7 +26,7 @@ public class ArticleController {
     // write form
     @GetMapping("/article/write")
     String showWrite() {
-        return "article/write";
+        return "/article/write";
     }
 
     // write
