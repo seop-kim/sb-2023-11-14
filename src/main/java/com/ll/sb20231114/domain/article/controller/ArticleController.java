@@ -2,11 +2,10 @@ package com.ll.sb20231114.domain.article.controller;
 
 import com.ll.sb20231114.domain.article.entity.Article;
 import com.ll.sb20231114.domain.article.service.ArticleService;
+import com.ll.sb20231114.global.Rq;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import lombok.Data;
@@ -21,6 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class ArticleController {
     private final ArticleService articleService;
+    private final Rq rq;
+
 
     // write form
     @GetMapping("/article/write")
@@ -33,10 +34,7 @@ public class ArticleController {
     String write(@Valid WriteForm form) {
         Article article = articleService.write(form.getTitle(), form.getBody());
 
-        String msg = "%d번 게시물이 생성되었습니다.".formatted(article.getId());
-        msg = URLEncoder.encode(msg, StandardCharsets.UTF_8);
-
-        return "redirect:/article/list?msg=" + msg;
+        return rq.redirect("/article/list", "%d번 게시물이 생성되었습니다.".formatted(article.getId()));
     }
 
     // list
@@ -61,10 +59,7 @@ public class ArticleController {
     String articleDel(@PathVariable Long id) {
         articleService.delete(id);
 
-        String msg = "%d번 게시물이 삭제되었습니다.".formatted(id);
-        msg = URLEncoder.encode(msg, StandardCharsets.UTF_8);
-
-        return "redirect:/article/list?msg=" + msg;
+        return rq.redirect("/article/list", "%d번 게시물이 삭제되었습니다.".formatted(id));
     }
 
     // modify form
@@ -80,14 +75,12 @@ public class ArticleController {
     @PostMapping("/article/modify")
     String modify(@Valid ModifyForm form) {
         articleService.modify(form);
-        String msg = "게시물이 수정되었습니다.";
-        msg = URLEncoder.encode(msg, StandardCharsets.UTF_8);
 
-        return "redirect:/article/detail/%d?msg=".formatted(form.getId()) + msg;
+        return rq.redirect("/article/detail/%d".formatted(form.getId()), "게시물이 수정되었습니다.");
     }
 
     @Data
-    public static class WriteForm { // inner class
+    public static class WriteForm {
 
         @NotBlank(message = "title is not null")
         @NotNull
