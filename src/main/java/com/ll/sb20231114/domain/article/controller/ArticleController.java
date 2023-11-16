@@ -3,7 +3,6 @@ package com.ll.sb20231114.domain.article.controller;
 import com.ll.sb20231114.domain.article.entity.Article;
 import com.ll.sb20231114.domain.article.service.ArticleService;
 import com.ll.sb20231114.global.Rq;
-import com.ll.sb20231114.global.rsData.RsData;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -39,21 +38,15 @@ public class ArticleController {
         @NotBlank(message = "body is not null")
         @NotNull
         private String body;
-
     }
 
     @PostMapping("/article/write")
-    @ResponseBody
-    RsData write(@Valid WriteForm form) {
+    String write(@Valid WriteForm form) {
         Article article = articleService.write(form.getTitle(), form.getBody());
 
-        RsData<Article> rs = new RsData<>(
-                "S-1",
-                "%d번 게시물이 작성되었습니다.".formatted(article.getId()),
-                article
-        );
+        String msg = "id %d, article created".formatted(article.getId());
 
-        return rs;
+        return "redirect:/article/list?msg=" + msg;
     }
 
     @GetMapping("/article/list")
