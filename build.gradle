@@ -28,6 +28,7 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-thymeleaf',
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-validation',
+            'org.springframework.boot:spring-boot-starter-actuator',
             'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     )
     compileOnly 'org.projectlombok:lombok'

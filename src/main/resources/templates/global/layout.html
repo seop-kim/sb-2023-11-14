@@ -5,13 +5,27 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>SIMPLE</title>
-    <link rel="stylesheet" href="/global.css"/>
+
+    <!-- 제이쿼리 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- toastr 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <link href="https://jhs512.github.io/toastr/toastr.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/resource/global.css">
+    <script src="/resource/global.js"></script>
 </head>
 <body>
 <link href="https://cdn.jsdelivr.net/npm/daisyui@4.0.8/dist/full.min.css" rel="stylesheet" type="text/css"/>
 
 <!--tailwindcss-->
 <script src="https://cdn.tailwindcss.com"></script>
+
+<div class="alert alert-success mt-5" th:if="${param.msg} != null">
+    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+    <span th:text="${param.msg}"></span>
+</div>
 
 <div class="navbar bg-base-100">
     <div class="navbar-start">
@@ -32,8 +46,9 @@
         <a href="/" class="btn btn-ghost text-xl">SIMPLE</a>
     </div>
     <div class="navbar-end">
-
     </div>
+
+
 </div>
 
 <th:block layout:fragment="content"></th:block>
