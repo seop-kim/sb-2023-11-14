@@ -1,21 +1,7 @@
 package com.ll.sb20231114.global.app;
 
-import com.ll.sb20231114.domain.article.entity.Article;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AppConfig {
-    @Bean
-    List<Article> articles2() {
-        return new LinkedList<>();
-    }
-
-    @Bean
-    List<Article> articles() { // 타입과 메소드 명이 같은
-        return new ArrayList<>();
-    }
 }
