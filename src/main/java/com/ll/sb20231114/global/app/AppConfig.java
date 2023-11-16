@@ -15,7 +15,7 @@ public class AppConfig {
     }
 
     @Bean
-    List<Article> articles() {
+    List<Article> articles() { // 타입과 메소드 명이 같은
         return new ArrayList<>();
     }
 }

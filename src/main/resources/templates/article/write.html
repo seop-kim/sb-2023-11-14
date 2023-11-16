@@ -1,4 +1,4 @@
-<form method="POST" onsubmit="submitWriteForm(this); return false;"
+<form action="/article/write" method="POST" onsubmit="submitWriteForm(this); return false;"
       style="display: flex; flex-direction: column; gap:20px; max-width:500px;">
     <input type="text" name="title" placeholder="제목">
 
@@ -8,8 +8,6 @@
     <button type="submit">
         글쓰기
     </button>
-
-    <input onclick="this.closest('form').setAttribute('action', '/article/write2')" type="submit" value="글쓰기">
 </form>
 
 <script>
