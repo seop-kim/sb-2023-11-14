@@ -11,11 +11,11 @@
 <!--tailwindcss-->
 <script src="https://cdn.tailwindcss.com"></script>
 
-<div style="color:red;" th:if="${param.msg} != null">
+<div class="text-[#FF0000]" th:if="${param.msg} != null">
     메세지 : [[${param.msg}]]
 </div>
 
-<ul style="display: flex; gap : 20px;">
+<ul class="flex gap-[21.45px]">
     <li><a href="/article/write">글쓰기</a></li>
     <li><a href="/article/list">글목록</a></li>
 </ul>

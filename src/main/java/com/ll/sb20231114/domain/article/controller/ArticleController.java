@@ -22,7 +22,6 @@ public class ArticleController {
     private final ArticleService articleService;
     private final Rq rq;
 
-
     // write form
     @GetMapping("/article/write")
     String showWrite() {
@@ -33,7 +32,6 @@ public class ArticleController {
     @PostMapping("/article/write")
     String write(@Valid WriteForm form) {
         Article article = articleService.write(form.getTitle(), form.getBody());
-
         return rq.redirect("/article/list", "%d번 게시물이 생성되었습니다.".formatted(article.getId()));
     }
 
