@@ -1,17 +1,32 @@
 <html layout:decorate="~{global/layout}">
-<div layout:fragment="content">
+<div layout:fragment="content" class="p-2">
 
-    <h1>Article Modify</h1>
+    <h1 class="text-center">Article Modify</h1>
 
-    <form method="POST" action="/article/modify" onsubmit="submitModifyForm(this); return false;"
-          style="display: flex; flex-direction: column; gap:20px; max-width:500px;">
+    <form class="flex flex-col gap-2" action="/article/modify" method="POST" onsubmit="submitModifyForm(this); return false;">
         <input type="hidden" name="id" th:value="${article.id}">
+        <div class="form-control w-full">
+            <label class="label">
+                <span class="label-text">Title</span>
+            </label>
 
-        <input type="text" name="title" placeholder="제목" th:value="${article.title}">
+            <label>
+                <input type="text" name="title" placeholder="Request Title" th:value="${article.title}" class="input input-bordered w-full"/>
+            </label>
+        </div>
 
-        <input type="text" name="body" placeholder="내용" th:value="${article.body}">
+        <div class="form-control w-full">
+            <label class="label">
+                <span class="label-text">Content</span>
+            </label>
 
-        <button type="submit">
+            <label>
+                <input type="text" name="body" placeholder="Request Content" th:value="${article.body}" class="input input-bordered w-full"/>
+            </label>
+        </div>
+
+        <!-- javascript:; 는 아무것도 하지 않는다는 뜻 -->
+        <button class="btn btn-primary btn-block mt-3" type="submit">
             수정
         </button>
     </form>
