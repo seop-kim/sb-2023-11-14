@@ -18,5 +18,5 @@
 
 <ul style="display: flex; gap: 20px;">
     <li><a th:href="|/article/modify/${article.id}|">수정</a></li>
-    <li><a th:href="|/article/delete/${article.id}|">삭제</a></li>
+    <li><a onClick="return confirm('정말로 삭제하시겠습니까?')" th:href="|/article/delete/${article.id}|">삭제</a></li>
 </ul>
