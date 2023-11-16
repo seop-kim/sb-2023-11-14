@@ -3,6 +3,7 @@ package com.ll.sb20231114.domain.article.service;
 import com.ll.sb20231114.domain.article.entity.Article;
 import com.ll.sb20231114.domain.article.repository.ArticleRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +26,9 @@ public class ArticleService {
 
     public List<Article> findAll() {
         return articleRepository.findAll();
+    }
+
+    public Optional<Article> findById(Long id) {
+        return articleRepository.findById(id);
     }
 }

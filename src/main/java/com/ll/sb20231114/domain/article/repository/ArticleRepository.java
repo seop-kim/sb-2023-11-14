@@ -3,6 +3,7 @@ package com.ll.sb20231114.domain.article.repository;
 import com.ll.sb20231114.domain.article.entity.Article;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -31,5 +32,12 @@ public class ArticleRepository {
 
     public List<Article> findAll() {
         return articles;
+    }
+
+
+    public Optional<Article> findById(Long id) {
+        return articles.stream()
+                .filter(article -> article.getId() == id)
+                .findFirst();
     }
 }
