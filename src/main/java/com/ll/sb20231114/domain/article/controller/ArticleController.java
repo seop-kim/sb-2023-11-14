@@ -30,7 +30,7 @@ public class ArticleController {
 
     // write
     @PostMapping("/article/write")
-    String write(@Valid WriteForm form) {
+    String write(@Valid ArticleController.ArticleWriteForm form) {
         Article article = articleService.write(form.getTitle(), form.getBody());
         return rq.redirect("/article/list", "%d번 게시물이 생성되었습니다.".formatted(article.getId()));
     }
@@ -71,14 +71,14 @@ public class ArticleController {
 
     // modify
     @PostMapping("/article/modify")
-    String modify(@Valid ModifyForm form) {
+    String modify(@Valid ArticleController.MemberModifyForm form) {
         articleService.modify(form);
 
         return rq.redirect("/article/detail/%d".formatted(form.getId()), "게시물이 수정되었습니다.");
     }
 
     @Data
-    public static class WriteForm {
+    public static class ArticleWriteForm {
 
         @NotBlank(message = "title is not null")
         @NotNull
@@ -90,7 +90,7 @@ public class ArticleController {
     }
 
     @Data
-    public static class ModifyForm {
+    public static class MemberModifyForm {
         private Long id;
 
         @NotBlank(message = "title is not null")
