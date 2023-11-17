@@ -44,4 +44,11 @@ public class MemberRepository {
     public void delete(Long id) {
         members.removeIf(member -> member.getId() == id);
     }
+
+    public Optional<Member> findByUserName(String username) {
+        return members.stream()
+                .filter(member -> member.getUsername().equals(username))
+                .findFirst();
+    }
+
 }

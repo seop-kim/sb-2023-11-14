@@ -3,9 +3,14 @@ package com.ll.sb20231114.domain.member.controller;
 import com.ll.sb20231114.domain.member.entity.Member;
 import com.ll.sb20231114.domain.member.service.MemberService;
 import com.ll.sb20231114.global.Rq;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.Optional;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,21 +23,50 @@ public class MemberController {
     private final MemberService memberService;
     private final Rq rq;
 
-    // write form
+    // join form
     @GetMapping("/member/join")
     String showWrite() {
         return "/member/join";
     }
 
-    // write
+    // join
     @PostMapping("/member/join")
-    String join(@Valid MemberController.MemberWriteForm form) {
+    String join(@Valid MemberJoinForm form) {
         Member member = memberService.join(form.getUsername(), form.getPassword());
         return rq.redirect("/article/list", "회원가입이 완료되었습니다.");
     }
 
+    @GetMapping("/member/login")
+    String showLogin() {
+        return "/member/login";
+    }
+
+    @PostMapping("/member/login")
+    String login(@Valid MemberJoinForm form, HttpServletRequest req, HttpServletResponse resp) {
+        Optional<Member> opFindMember = memberService.login(form.username, form.password);
+
+        if (opFindMember.isEmpty()) {
+            throw new IllegalArgumentException("등록된 회원이 없습니다.");
+        }
+
+        Member findMember = opFindMember.get();
+
+        if (!findMember.getPassword().equals(form.password)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        Cookie cookie = new Cookie("loginedMemberId", findMember.getId() + "");
+        cookie.setPath("/");
+        resp.addCookie(cookie);
+
+        HttpSession session = req.getSession();
+        session.setAttribute("loginedMemberId", findMember.getId());
+
+        return rq.redirect("/article/list", "로그인이 완료되었습니다.");
+    }
+
     @Data
-    public static class MemberWriteForm {
+    public static class MemberJoinForm {
 
         @NotBlank(message = "username is not null")
         @NotNull

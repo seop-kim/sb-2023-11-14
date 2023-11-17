@@ -1,0 +1,59 @@
+<html layout:decorate="~{global/layout}">
+<div layout:fragment="content" class="p-2">
+
+    <h1 class="text-center"><i class="fa-solid fa-user-plus"></i>  Member Login</h1>
+
+    <form class="flex flex-col gap-2" method="POST" onsubmit="submitJoinForm(this); return false;">
+
+        <div class="form-control w-full">
+            <label class="label">
+                <span class="label-text">NickName</span>
+            </label>
+
+            <label>
+                <input type="text" name="username" placeholder="Request Username" class="input input-bordered w-full"/>
+            </label>
+        </div>
+
+        <div class="form-control w-full">
+            <label class="label">
+                <span class="label-text">Password</span>
+            </label>
+
+            <label>
+                <input type="password" name="password" placeholder="Request Password" class="input input-bordered w-full"/>
+            </label>
+        </div>
+        <button class="btn btn-primary btn-block mt-3" type="submit">
+            <i class="fa-solid fa-user-plus"></i> 로그인
+        </button>
+    </form>
+
+    <script>
+        function submitJoinForm(form) {
+            const inputUsername = form.username;
+            const inputPassword = form.password;
+
+            inputUsername.value = inputUsername.value.trim();
+            inputPassword.value = inputPassword.value.trim();
+
+            const username = inputUsername.value;
+            const password = inputPassword.value;
+
+            if (username.length == 0) {
+                toastWarning('닉네임을 입력해주세요.');
+                inputUsername.focus();
+                return;
+            }
+
+            if (password.length == 0) {
+                toastWarning('비밀번호를 입력해주세요.');
+                inputPassword.focus();
+                return;
+            }
+            form.submit();
+        }
+    </script>
+
+</div>
+</html>

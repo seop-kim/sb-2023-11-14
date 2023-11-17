@@ -1,9 +1,7 @@
 package com.ll.sb20231114.domain.member.service;
 
-import com.ll.sb20231114.domain.member.controller.MemberController.MemberModifyForm;
 import com.ll.sb20231114.domain.member.entity.Member;
 import com.ll.sb20231114.domain.member.repository.MemberRepository;
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -38,10 +36,14 @@ public class MemberService {
         memberRepository.delete(id);
     }
 
-    public void modify(@Valid MemberModifyForm form) {
-        Optional<Member> findOne = findById(form.getId());
+    public void modify(Long id, String username, String password) {
+        Optional<Member> findOne = findById(id);
         Member member = findOne.get();
 
-        member.memberUpdate(form.getUsername(), form.getPassword());
+        member.memberUpdate(username, password);
+    }
+
+    public Optional<Member> login(String username, String password) {
+        return memberRepository.findByUserName(username);
     }
 }

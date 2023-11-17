@@ -1,6 +1,5 @@
 package com.ll.sb20231114.domain.article.service;
 
-import com.ll.sb20231114.domain.article.controller.ArticleController.MemberModifyForm;
 import com.ll.sb20231114.domain.article.entity.Article;
 import com.ll.sb20231114.domain.article.repository.ArticleRepository;
 import java.util.List;
@@ -37,10 +36,10 @@ public class ArticleService {
         articleRepository.delete(id);
     }
 
-    public void modify(MemberModifyForm form) {
-        Optional<Article> findOne = findById(form.getId());
+    public void modify(Long id, String title, String body) {
+        Optional<Article> findOne = findById(id);
         Article article = findOne.get();
 
-        article.articleUpdate(form.getTitle(), form.getBody());
+        article.articleUpdate(title, body);
     }
 }
