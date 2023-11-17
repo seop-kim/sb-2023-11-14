@@ -1,7 +1,7 @@
 <html layout:decorate="~{global/layout}">
 <div layout:fragment="content" class="p-2">
 
-    <h1 class="text-center">Article Modify</h1>
+    <h1 class="text-center"><i class="fa-regular fa-pen-to-square"></i> Article Modify</h1>
 
     <form class="flex flex-col gap-2" action="/article/modify" method="POST" onsubmit="submitModifyForm(this); return false;">
         <input type="hidden" name="id" th:value="${article.id}">
