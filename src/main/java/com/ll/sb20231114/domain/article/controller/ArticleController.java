@@ -5,12 +5,10 @@ import com.ll.sb20231114.domain.article.service.ArticleService;
 import com.ll.sb20231114.domain.member.entity.Member;
 import com.ll.sb20231114.domain.member.service.MemberService;
 import com.ll.sb20231114.global.Rq;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import lombok.Data;
@@ -44,21 +42,16 @@ public class ArticleController {
     // list
     @GetMapping("/article/list")
     String showList(Model model, HttpServletRequest req) {
-        Long opLoginedMemberId =
-                Optional.ofNullable(req.getCookies())
-                        .stream()
-                        .flatMap(Arrays::stream)
-                        .filter(cookie -> cookie.getName().equals("loginedMemberId"))
-                        .map(Cookie::getValue)
-                        .mapToLong(Long::parseLong)
-                        .findFirst()
-                        .orElse(0);
-
-        if (opLoginedMemberId>0) {
-            Member loginedMember = memberService.findById(opLoginedMemberId).get();
-            model.addAttribute("loginedMember", loginedMember);
+        // Session get user
+        Long fromSessionLoginedMemberId = 0L;
+        if (req.getSession().getAttribute("loginedMemberId") != null) {
+            fromSessionLoginedMemberId = (Long) req.getSession().getAttribute("loginedMemberId");
         }
 
+        if (fromSessionLoginedMemberId > 0) {
+            Member loginedMember = (Member) memberService.findById(fromSessionLoginedMemberId).get();
+            model.addAttribute("fromSessionLoginedMember", loginedMember);
+        }
 
         List<Article> articles = articleService.findAll();
         model.addAttribute("articles", articles);
