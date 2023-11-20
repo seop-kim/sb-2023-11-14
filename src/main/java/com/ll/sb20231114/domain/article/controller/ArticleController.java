@@ -25,13 +25,17 @@ public class ArticleController {
     // write form
     @GetMapping("/article/write")
     String showWrite() {
+        // 403 error
+        if (!rq.isLogined()) {
+            throw new RuntimeException("로그인 후 이용해주세요.");
+        }
         return "/article/write";
     }
 
     // write
     @PostMapping("/article/write")
     String write(@Valid ArticleController.ArticleWriteForm form) {
-        Article article = articleService.write(form.getTitle(), form.getBody());
+        Article article = articleService.write(rq.getMember(), form.getTitle(), form.getBody());
         return rq.redirect("/article/list", "%d번 게시물이 생성되었습니다.".formatted(article.getId()));
     }
 
@@ -55,6 +59,11 @@ public class ArticleController {
     // delete
     @GetMapping("/article/delete/{id}")
     String articleDel(@PathVariable Long id) {
+        // 403 error
+        if (!rq.isLogined()) {
+            throw new RuntimeException("로그인 후 이용해주세요.");
+        }
+
         articleService.delete(id);
         return rq.redirect("/article/list", "%d번 게시물이 삭제되었습니다.".formatted(id));
     }
@@ -78,7 +87,6 @@ public class ArticleController {
 
     @Data
     public static class ArticleWriteForm {
-
         @NotBlank(message = "title is not null")
         @NotNull
         private String title;
