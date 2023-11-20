@@ -29,6 +29,16 @@ public class ArticleController {
     // write form
     @GetMapping("/article/write")
     String showWrite() {
+        HttpServletRequest req = rq.getReq();
+
+        // Session get user
+        Long loginedMemberId = rq.getLoginedMemberId();
+
+        if (loginedMemberId > 0) {
+            Member loginedMember = (Member) memberService.findById(loginedMemberId).get();
+            req.setAttribute("loginedMemberId", loginedMember);
+        }
+
         return "/article/write";
     }
 
@@ -43,18 +53,14 @@ public class ArticleController {
     @GetMapping("/article/list")
     String showList(Model model, HttpServletRequest req) {
         // Session get user
-        Long fromSessionLoginedMemberId =
+        Long loginedMemberId =
                 Optional.ofNullable(req.getSession().getAttribute("loginedMemberId"))
-                        .map(id -> (Long) id)
+                        .map(_id -> (Long) _id)
                         .orElse(0L);
 
-        if (req.getSession().getAttribute("loginedMemberId") != null) {
-            fromSessionLoginedMemberId = (Long) req.getSession().getAttribute("loginedMemberId");
-        }
-
-        if (fromSessionLoginedMemberId > 0) {
-            Member loginedMember = (Member) memberService.findById(fromSessionLoginedMemberId).get();
-            model.addAttribute("fromSessionLoginedMember", loginedMember);
+        if (loginedMemberId > 0) {
+            Member loginedMember = (Member) memberService.findById(loginedMemberId).get();
+            model.addAttribute("loginedMemberId", loginedMember);
         }
 
         List<Article> articles = articleService.findAll();
@@ -64,9 +70,21 @@ public class ArticleController {
 
     // article detail
     @GetMapping("/article/detail/{id}")
-    String showDetail(@PathVariable("id") Long id, Model model) {
+    String showDetail(@PathVariable("id") Long id, Model model, HttpServletRequest req) {
         Optional<Article> findOne = articleService.findById(id);
         Article article = findOne.get();
+
+        // Session get user
+        Long loginedMemberId =
+                Optional.ofNullable(req.getSession().getAttribute("loginedMemberId"))
+                        .map(_id -> (Long) _id)
+                        .orElse(0L);
+
+        if (loginedMemberId > 0) {
+            Member loginedMember = (Member) memberService.findById(loginedMemberId).get();
+            model.addAttribute("loginedMemberId", loginedMember);
+        }
+
         model.addAttribute("article", article);
         return "/article/detail";
     }

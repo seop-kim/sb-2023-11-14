@@ -53,6 +53,7 @@ public class MemberController {
         if (!findMember.getPassword().equals(form.password)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+
         HttpSession session = req.getSession();
         session.setAttribute("loginedMemberId", findMember.getId());
 
