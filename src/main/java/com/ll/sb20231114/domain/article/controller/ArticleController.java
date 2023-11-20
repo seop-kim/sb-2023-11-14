@@ -43,7 +43,11 @@ public class ArticleController {
     @GetMapping("/article/list")
     String showList(Model model, HttpServletRequest req) {
         // Session get user
-        Long fromSessionLoginedMemberId = 0L;
+        Long fromSessionLoginedMemberId =
+                Optional.ofNullable(req.getSession().getAttribute("loginedMemberId"))
+                        .map(id -> (Long) id)
+                        .orElse(0L);
+
         if (req.getSession().getAttribute("loginedMemberId") != null) {
             fromSessionLoginedMemberId = (Long) req.getSession().getAttribute("loginedMemberId");
         }
