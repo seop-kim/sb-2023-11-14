@@ -49,8 +49,8 @@
     </div>
     <!-- Login user info -->
     <div class="navbar-end">
-        <a th:if="${loginedMemberId} != null" href="/member/me" class="btn tbn-ghost text-xl">
-            <span th:text="|${loginedMemberId.username}'s page|"></span>
+        <a th:if="${@rq.isLogined}" href="/member/me" class="btn tbn-ghost text-xl">
+            <span th:text="|${@rq.member.username}'s page|"></span>
         </a>
     </div>
 </div>

@@ -5,7 +5,6 @@ import com.ll.sb20231114.domain.member.service.MemberService;
 import com.ll.sb20231114.global.Rq;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -54,17 +53,23 @@ public class MemberController {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        HttpSession session = req.getSession();
-        session.setAttribute("loginedMemberId", findMember.getId());
+        rq.setSessionAttr("loginedMemberId", findMember.getId());
 
         return rq.redirect("/article/list", "로그인이 완료되었습니다.");
     }
 
     @GetMapping("/member/me")
     String me() {
-
         return "/";
     }
+
+    @GetMapping("/member/logout")
+    String logout() {
+        rq.removeSessionAttr("loginedMemberId");
+
+        return rq.redirect("/article/list", "로그아웃 되었습니다.");
+    }
+
     @Data
     public static class MemberJoinForm {
 

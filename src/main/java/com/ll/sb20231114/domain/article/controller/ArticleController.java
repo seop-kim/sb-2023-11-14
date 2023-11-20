@@ -2,10 +2,7 @@ package com.ll.sb20231114.domain.article.controller;
 
 import com.ll.sb20231114.domain.article.entity.Article;
 import com.ll.sb20231114.domain.article.service.ArticleService;
-import com.ll.sb20231114.domain.member.entity.Member;
-import com.ll.sb20231114.domain.member.service.MemberService;
 import com.ll.sb20231114.global.Rq;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,21 +21,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ArticleController {
     private final ArticleService articleService;
     private final Rq rq;
-    private final MemberService memberService;
 
     // write form
     @GetMapping("/article/write")
     String showWrite() {
-        HttpServletRequest req = rq.getReq();
-
-        // Session get user
-        Long loginedMemberId = rq.getLoginedMemberId();
-
-        if (loginedMemberId > 0) {
-            Member loginedMember = (Member) memberService.findById(loginedMemberId).get();
-            req.setAttribute("loginedMemberId", loginedMember);
-        }
-
         return "/article/write";
     }
 
@@ -51,18 +37,7 @@ public class ArticleController {
 
     // list
     @GetMapping("/article/list")
-    String showList(Model model, HttpServletRequest req) {
-        // Session get user
-        Long loginedMemberId =
-                Optional.ofNullable(req.getSession().getAttribute("loginedMemberId"))
-                        .map(_id -> (Long) _id)
-                        .orElse(0L);
-
-        if (loginedMemberId > 0) {
-            Member loginedMember = (Member) memberService.findById(loginedMemberId).get();
-            model.addAttribute("loginedMemberId", loginedMember);
-        }
-
+    String showList(Model model) {
         List<Article> articles = articleService.findAll();
         model.addAttribute("articles", articles);
         return "/article/list";
@@ -70,21 +45,9 @@ public class ArticleController {
 
     // article detail
     @GetMapping("/article/detail/{id}")
-    String showDetail(@PathVariable("id") Long id, Model model, HttpServletRequest req) {
+    String showDetail(@PathVariable("id") Long id, Model model) {
         Optional<Article> findOne = articleService.findById(id);
         Article article = findOne.get();
-
-        // Session get user
-        Long loginedMemberId =
-                Optional.ofNullable(req.getSession().getAttribute("loginedMemberId"))
-                        .map(_id -> (Long) _id)
-                        .orElse(0L);
-
-        if (loginedMemberId > 0) {
-            Member loginedMember = (Member) memberService.findById(loginedMemberId).get();
-            model.addAttribute("loginedMemberId", loginedMember);
-        }
-
         model.addAttribute("article", article);
         return "/article/detail";
     }
@@ -93,7 +56,6 @@ public class ArticleController {
     @GetMapping("/article/delete/{id}")
     String articleDel(@PathVariable Long id) {
         articleService.delete(id);
-
         return rq.redirect("/article/list", "%d번 게시물이 삭제되었습니다.".formatted(id));
     }
 
