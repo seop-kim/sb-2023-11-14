@@ -33,6 +33,11 @@ public class Rq {
     }
 
     private Long getMemberId() {
+        System.out.println(
+                "Rq.getMemberId : " +  Optional.ofNullable(req.getSession().getAttribute("loginedMemberId"))
+                .map(_id -> (Long) _id)
+                .orElse(0L));
+
         return Optional.ofNullable(req.getSession().getAttribute("loginedMemberId"))
                 .map(_id -> (Long) _id)
                 .orElse(0L);

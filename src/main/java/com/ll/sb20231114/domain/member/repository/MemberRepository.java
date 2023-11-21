@@ -33,9 +33,10 @@ public class MemberRepository {
 
     public Optional<Member> findById(Long id) {
         return members.stream()
-                .filter(member -> member.getId() == id)
+                .filter(member -> member.getId().equals(id))
                 .findFirst();
     }
+    // 메모리 저장을 하는  로그인을 1번
 
     public void delete(Long id) {
         members.removeIf(member -> member.getId() == id);

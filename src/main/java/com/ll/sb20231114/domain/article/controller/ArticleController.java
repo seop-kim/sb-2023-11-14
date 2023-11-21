@@ -58,10 +58,6 @@ public class ArticleController {
         Optional<Article> findOne = articleService.findById(id);
         Article article = findOne.get();
 
-        if (article == null) {
-            throw new RuntimeException("None article");
-        }
-
         if (!articleService.canDelete(rq.getMember(), article)) {
             throw new RuntimeException("삭제 권한이 없습니다.");
         }
@@ -76,12 +72,8 @@ public class ArticleController {
         Optional<Article> findOne = articleService.findById(id);
         Article article = findOne.get();
 
-        if (article == null) {
-            throw new RuntimeException("None article");
-        }
-
         if (!articleService.canModify(rq.getMember(), article)) {
-            throw new RuntimeException("변경 권한이 없습니다.");
+            throw new RuntimeException("수정 권한이 없습니다.");
         }
 
         model.addAttribute("article", article);
