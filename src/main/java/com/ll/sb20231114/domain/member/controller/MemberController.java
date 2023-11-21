@@ -2,7 +2,7 @@ package com.ll.sb20231114.domain.member.controller;
 
 import com.ll.sb20231114.domain.member.entity.Member;
 import com.ll.sb20231114.domain.member.service.MemberService;
-import com.ll.sb20231114.global.Rq;
+import com.ll.sb20231114.global.rq.Rq;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

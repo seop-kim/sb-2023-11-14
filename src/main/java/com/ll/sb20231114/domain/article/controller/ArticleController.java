@@ -2,7 +2,7 @@ package com.ll.sb20231114.domain.article.controller;
 
 import com.ll.sb20231114.domain.article.entity.Article;
 import com.ll.sb20231114.domain.article.service.ArticleService;
-import com.ll.sb20231114.global.Rq;
+import com.ll.sb20231114.global.rq.Rq;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
