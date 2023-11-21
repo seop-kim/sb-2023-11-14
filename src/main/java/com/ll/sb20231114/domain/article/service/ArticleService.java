@@ -44,14 +44,21 @@ public class ArticleService {
     }
 
     public boolean canModify(Member actor, Article article) {
-        return isCan(actor, article);
+        if (actor == null) {
+            return false;
+        }
+        return article.getAuthor().equals(actor);
     }
 
     public boolean canDelete(Member actor, Article article) {
-        return isCan(actor, article);
-    }
+        if (actor == null) {
+            return false;
+        }
 
-    private boolean isCan(Member actor, Article article) {
+        if (actor.isAdmin()) {
+            return true;
+        }
+
         return article.getAuthor().equals(actor);
     }
 }
