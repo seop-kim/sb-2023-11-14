@@ -32,8 +32,8 @@ public class ArticleService {
         return articleRepository.findById(id);
     }
 
-    public void delete(Long id) {
-        articleRepository.delete(id);
+    public void delete(Article article) {
+        articleRepository.delete(article);
     }
 
     public void modify(Long id, String title, String body) {
@@ -41,5 +41,17 @@ public class ArticleService {
         Article article = findOne.get();
 
         article.articleUpdate(title, body);
+    }
+
+    public boolean canModify(Member actor, Article article) {
+        return isCan(actor, article);
+    }
+
+    public boolean canDelete(Member actor, Article article) {
+        return isCan(actor, article);
+    }
+
+    private boolean isCan(Member actor, Article article) {
+        return article.getAuthor().equals(actor);
     }
 }

@@ -21,7 +21,6 @@ public class NotProd {
             articleService.write(admin, "test1", "test1");
             articleService.write(member1, "test2", "test2");
             articleService.write(member2, "test3", "test3");
-
             System.out.println("test data init");
         };
     }

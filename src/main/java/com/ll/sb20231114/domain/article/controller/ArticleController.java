@@ -25,10 +25,6 @@ public class ArticleController {
     // write form
     @GetMapping("/article/write")
     String showWrite() {
-        // 403 error
-        if (!rq.isLogined()) {
-            throw new RuntimeException("로그인 후 이용해주세요.");
-        }
         return "/article/write";
     }
 
@@ -59,12 +55,18 @@ public class ArticleController {
     // delete
     @GetMapping("/article/delete/{id}")
     String articleDel(@PathVariable Long id) {
-        // 403 error
-        if (!rq.isLogined()) {
-            throw new RuntimeException("로그인 후 이용해주세요.");
+        Optional<Article> findOne = articleService.findById(id);
+        Article article = findOne.get();
+
+        if (article == null) {
+            throw new RuntimeException("None article");
         }
 
-        articleService.delete(id);
+        if (!articleService.canDelete(rq.getMember(), article)) {
+            throw new RuntimeException("삭제 권한이 없습니다.");
+        }
+
+        articleService.delete(article);
         return rq.redirect("/article/list", "%d번 게시물이 삭제되었습니다.".formatted(id));
     }
 
@@ -73,6 +75,15 @@ public class ArticleController {
     String modifyForm(@PathVariable Long id, Model model) {
         Optional<Article> findOne = articleService.findById(id);
         Article article = findOne.get();
+
+        if (article == null) {
+            throw new RuntimeException("None article");
+        }
+
+        if (!articleService.canModify(rq.getMember(), article)) {
+            throw new RuntimeException("변경 권한이 없습니다.");
+        }
+
         model.addAttribute("article", article);
         return "/article/modify";
     }
@@ -81,7 +92,6 @@ public class ArticleController {
     @PostMapping("/article/modify")
     String modify(@Valid ArticleController.MemberModifyForm form) {
         articleService.modify(form.id, form.title, form.body);
-
         return rq.redirect("/article/detail/%d".formatted(form.getId()), "게시물이 수정되었습니다.");
     }
 
