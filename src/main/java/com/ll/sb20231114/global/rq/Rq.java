@@ -64,13 +64,6 @@ public class Rq {
         return member;
     }
 
-    public void setSessionAttr(String name, Object value) {
-        req.getSession().setAttribute(name, value);
-    }
-    public void removeSessionAttr(String name) {
-        req.getSession().removeAttribute(name);
-    }
-
     public boolean isAdmin() {
         return user.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
@@ -82,5 +75,12 @@ public class Rq {
 
     public <T> T getSessionAttr(String name) {
         return (T) req.getSession().getAttribute(name);
+    }
+
+    public void setSessionAttr(String name, Object value) {
+        req.getSession().setAttribute(name, value);
+    }
+    public void removeSessionAttr(String name) {
+        req.getSession().removeAttribute(name);
     }
 }

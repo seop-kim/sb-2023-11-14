@@ -40,7 +40,10 @@
                 <li th:unless="${@rq.logined}"><a href="/member/login"><i class="fa-solid fa-right-to-bracket"></i> 로그인</a></li>
                 <li th:unless="${@rq.logined}"><a href="/member/join"><i class="fa-solid fa-user-plus"></i> 회원가입</a></li>
                 <li th:if="${@rq.logined}"><a href="/member/me"><i class="fa-solid fa-user"></i> 내 정보</a></li>
-                <li th:if="${@rq.logined}"><a href="/member/logout"><i class="fa-solid fa-right-from-bracket"></i> 로그아웃</a></li>
+                <li th:if="${@rq.logined}">
+                    <a href="javascript:" onclick="$(this).next().submit()"><i class="fa-solid fa-right-from-bracket"></i> 로그아웃</a>
+                    <form class="!hidden" th:action="|/member/logout|" method="post"></form>
+                </li>
             </ul>
         </div>
     </div>

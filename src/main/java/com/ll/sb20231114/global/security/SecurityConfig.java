@@ -21,6 +21,13 @@ public class SecurityConfig {
                                 .passwordParameter("password")
                                 .defaultSuccessUrl("/article/list")
                 )
+
+                .logout(
+                        logout -> logout
+                                .logoutUrl("/member/logout")
+                                .logoutSuccessUrl("/article/list")
+                )
+
                 .build();
     }
 

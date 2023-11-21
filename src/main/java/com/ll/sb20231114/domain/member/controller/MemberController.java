@@ -61,13 +61,11 @@ public class MemberController {
         return "/";
     }
 
-    @GetMapping("/member/logout")
-    String logout() {
-        rq.removeSessionAttr("loginedMemberId");
-        rq.removeSessionAttr("authorities");
-
-        return rq.redirect("/article/list", "로그아웃 되었습니다.");
-    }
+//    @GetMapping("/member/logout")
+//    String logout() {
+//        SecurityContextHolder.clearContext();
+//        return rq.redirect("/article/list", "로그아웃 되었습니다.");
+//    }
 
     @Data
     public static class MemberJoinForm {
