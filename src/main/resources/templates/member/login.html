@@ -4,7 +4,7 @@
     <h1 class="text-center"><i class="fa-solid fa-user-plus"></i>  Member Login</h1>
 
     <form class="flex flex-col gap-2" method="POST" onsubmit="submitJoinForm(this); return false;">
-
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <div class="form-control w-full">
             <label class="label">
                 <span class="label-text">NickName</span>
