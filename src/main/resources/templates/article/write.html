@@ -3,7 +3,7 @@
 
     <h1 class="text-center"><i class="fa-solid fa-pen"></i> Article Write</h1>
 
-    <form class="flex flex-col gap-2" method="POST" onsubmit="submitWriteForm(this); return false;">
+    <form class="flex flex-col gap-2" th:action method="POST" onsubmit="submitWriteForm(this); return false;">
 
         <div class="form-control w-full">
             <label class="label">

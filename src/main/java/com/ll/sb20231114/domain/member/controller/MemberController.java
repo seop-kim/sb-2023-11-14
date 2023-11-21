@@ -3,12 +3,9 @@ package com.ll.sb20231114.domain.member.controller;
 import com.ll.sb20231114.domain.member.entity.Member;
 import com.ll.sb20231114.domain.member.service.MemberService;
 import com.ll.sb20231114.global.rq.Rq;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.util.Optional;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -39,25 +36,25 @@ public class MemberController {
         return "/member/login";
     }
 
-    @PostMapping("/member/login")
-    String login(@Valid MemberJoinForm form, HttpServletRequest req, HttpServletResponse resp) {
-        Optional<Member> opFindMember = memberService.login(form.username, form.password);
-
-        if (opFindMember.isEmpty()) {
-            throw new IllegalArgumentException("등록된 회원이 없습니다.");
-        }
-
-        Member findMember = opFindMember.get();
-
-        if (!findMember.getPassword().equals(form.password)) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
-
-        rq.setSessionAttr("loginedMemberId", findMember.getId());
-        rq.setSessionAttr("authorities", findMember.getAuthorities());
-
-        return rq.redirect("/article/list", "로그인이 완료되었습니다.");
-    }
+//    @PostMapping("/member/login")
+//    String login(@Valid MemberJoinForm form, HttpServletRequest req, HttpServletResponse resp) {
+//        Optional<Member> opFindMember = memberService.login(form.username, form.password);
+//
+//        if (opFindMember.isEmpty()) {
+//            throw new IllegalArgumentException("등록된 회원이 없습니다.");
+//        }
+//
+//        Member findMember = opFindMember.get();
+//
+//        if (!findMember.getPassword().equals(form.password)) {
+//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+//        }
+//
+//        rq.setSessionAttr("loginedMemberId", findMember.getId());
+//        rq.setSessionAttr("authorities", findMember.getAuthorities());
+//
+//        return rq.redirect("/article/list", "로그인이 완료되었습니다.");
+//    }
 
     @GetMapping("/member/me")
     String me() {

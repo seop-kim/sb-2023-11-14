@@ -3,7 +3,7 @@
 
     <h1 class="text-center"><i class="fa-regular fa-pen-to-square"></i> Article Modify</h1>
 
-    <form class="flex flex-col gap-2" action="/article/modify" method="POST" onsubmit="submitModifyForm(this); return false;">
+    <form class="flex flex-col gap-2" th:action action="/article/modify" method="POST" onsubmit="submitModifyForm(this); return false;">
         <input type="hidden" name="id" th:value="${article.id}">
         <div class="form-control w-full">
             <label class="label">

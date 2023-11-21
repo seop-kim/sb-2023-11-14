@@ -3,7 +3,6 @@ package com.ll.sb20231114.global.interceptor;
 import com.ll.sb20231114.global.rq.Rq;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -15,13 +14,7 @@ public class NeedToAdminInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (!rq.isLogined()) {
-            throw new RuntimeException("로그인 후 이용해주세요.");
-        }
-
-        List<String> authorities = rq.getSessionAttr("authorities");
-
-        if (!authorities.contains("ROLE_ADMIN")) {
+        if (!rq.isAdmin()) {
             throw new RuntimeException("관리자만 이용할 수 있는 페이지 입니다.");
         }
         

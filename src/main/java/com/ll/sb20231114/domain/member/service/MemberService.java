@@ -5,14 +5,17 @@ import com.ll.sb20231114.domain.member.repository.MemberRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Member join(String username, String password) {
+        password = passwordEncoder.encode(password);
         Member member = new Member(username, password);
 
         memberRepository.save(member);
@@ -44,6 +47,10 @@ public class MemberService {
     }
 
     public Optional<Member> login(String username, String password) {
+        return memberRepository.findByUserName(username);
+    }
+
+    public Optional<Member> findByUsername(String username) {
         return memberRepository.findByUserName(username);
     }
 }
