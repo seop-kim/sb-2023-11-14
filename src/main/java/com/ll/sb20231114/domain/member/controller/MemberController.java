@@ -1,6 +1,5 @@
 package com.ll.sb20231114.domain.member.controller;
 
-import com.ll.sb20231114.domain.member.entity.Member;
 import com.ll.sb20231114.domain.member.service.MemberService;
 import com.ll.sb20231114.global.rq.Rq;
 import jakarta.validation.Valid;
@@ -30,7 +29,7 @@ public class MemberController {
     @PreAuthorize("isAnonymous()")
     @PostMapping("/member/join")
     String join(@Valid MemberJoinForm form) {
-        Member member = memberService.join(form.getUsername(), form.getPassword());
+        memberService.join(form.getUsername(), form.getPassword());
         return rq.redirect("/article/list", "회원가입이 완료되었습니다.");
     }
     @PreAuthorize("isAnonymous()")
@@ -48,12 +47,10 @@ public class MemberController {
     @Data
     public static class MemberJoinForm {
 
-        @NotBlank(message = "username is not null")
-        @NotNull
+        @NotBlank
         private String username;
 
-        @NotBlank(message = "password is not null")
-        @NotNull
+        @NotBlank
         private String password;
     }
 
