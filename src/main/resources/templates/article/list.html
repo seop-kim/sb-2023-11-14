@@ -1,8 +1,8 @@
 <html layout:decorate="~{global/layout}">
 <head>
-    <h1 class="font-bold mb-2"><i class="fa-solid fa-list"></i> 글 목록</h1>
-    <h1 class="font-bold mb-2"><i class="fa-solid fa-list"></i> 게시글 목록</h1>
+    <title>게시글 목록</title>
 </head>
+<body>
 <div layout:fragment="content" class="p-2">
 
 
@@ -10,9 +10,12 @@
 
     <ul th:if="${articles.size} > 0">
         <li th:each="article : ${articles.reversed}">
-            <a class="link" th:href="|/article/detail/${article.id}|" th:text="|${article.id}번 : ${article.title}|"></a>
+            <a class="link" th:href="|/article/detail/${article.id}|">
+                <th:block th:text="|${article.id}번 : ${article.title}|"></th:block>
+                <th:block th:text="|by ${article.author.username}|"></th:block>
+            </a>
         </li>
     </ul>
-    <hr>
 </div>
+</body>
 </html>

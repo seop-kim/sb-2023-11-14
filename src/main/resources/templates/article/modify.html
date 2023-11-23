@@ -1,6 +1,6 @@
 <html layout:decorate="~{global/layout}">
 <head>
-    <title th:text="|SIMPLE - 게시글 수정 - ${article.id}. ${article.title}|"></title>
+    <title th:text="|게시글 수정 - ${article.id}. ${article.title}|"></title>
 </head>
 
 <div layout:fragment="content" class="p-2">
@@ -11,56 +11,47 @@
     </h1>
 
 
-    <form class="flex flex-col gap-2" th:action action="/article/modify" method="POST" onsubmit="submitModifyForm(this); return false;">
-        <input type="hidden" name="id" th:value="${article.id}">
+    <form th:action class="flex flex-col gap-4" method="POST" onsubmit="submitModifyForm(this); return false;">
         <input type="hidden" name="_method" value="PUT">
-        <div class="form-control w-full">
+        <div class="form-control">
             <label class="label">
-                <span class="label-text">Title</span>
+                <span class="label-text">제목</span>
             </label>
-
-            <label>
-                <input type="text" name="title" placeholder="Request Title" th:value="${article.title}" class="input input-bordered w-full"/>
-            </label>
+            <input type="text" name="title" placeholder="제목을 입력해주세요." class="input input-bordered"
+                   th:value="${article.title}">
         </div>
 
-        <div class="form-control w-full">
+        <div class="form-control">
             <label class="label">
-                <span class="label-text">Content</span>
+                <span class="label-text">내용</span>
             </label>
 
-            <label>
-                <input type="text" name="body" placeholder="Request Content" th:value="${article.body}" class="input input-bordered w-full"/>
-            </label>
+            <textarea maxlength="10000" rows="5" name="body" placeholder="내용을 입력해주세요."
+                      class="textarea textarea-bordered"
+                      th:text="${article.body}"></textarea>
         </div>
 
-        <!-- javascript:; 는 아무것도 하지 않는다는 뜻 -->
-        <button class="btn btn-primary btn-block mt-3" type="submit">
+        <button class="btn btn-primary btn-block" type="submit">
             <i class="fa-regular fa-pen-to-square"></i> 게시글 수정
         </button>
     </form>
 
     <script>
         function submitModifyForm(form) {
-            const inputTitle = form.title;
-            const inputBody = form.body;
+            form.title.value = form.title.value.trim();
 
-            inputTitle.value = inputTitle.value.trim();
-            inputBody.value = inputBody.value.trim();
-
-            const title = inputTitle.value;
-            const body = inputBody.value;
-
-            if (title.length == 0) {
+            if (form.title.value.length == 0) {
                 toastWarning('제목을 입력해주세요.');
-                inputTitle.focus();
+                form.title.focus();
 
                 return;
             }
 
-            if (body.length == 0) {
+            form.body.value = form.body.value.trim();
+
+            if (form.body.value.length == 0) {
                 toastWarning('내용을 입력해주세요.');
-                inputBody.focus();
+                form.body.focus();
 
                 return;
             }
@@ -68,5 +59,9 @@
             form.submit();
         }
     </script>
+
 </div>
+
+</body>
+
 </html>

@@ -1,64 +1,58 @@
 <html layout:decorate="~{global/layout}">
 <head>
-    <title th:text="|SIMPLE - 게시글 작성|"></title>
+    <title th:text="|게시글 작성|"></title>
 </head>
 <div layout:fragment="content" class="p-2">
 
     <h1 class="text-center"><i class="fa-solid fa-pen"></i> Article Write</h1>
 
-    <form class="flex flex-col gap-2" th:action method="POST" onsubmit="submitWriteForm(this); return false;">
-
-        <div class="form-control w-full">
+    <form th:action class="flex flex-col gap-4" method="POST" onsubmit="submitWriteForm(this); return false;">
+        <div class="form-control">
             <label class="label">
-                <span class="label-text">Title</span>
+                <span class="label-text">제목</span>
             </label>
-
-            <label>
-                <input type="text" name="title" placeholder="Request Title" class="input input-bordered w-full"/>
-            </label>
+            <input type="text" name="title" placeholder="제목을 입력해주세요." class="input input-bordered">
         </div>
 
-        <div class="form-control w-full">
+        <div class="form-control">
             <label class="label">
-                <span class="label-text">Content</span>
+                <span class="label-text">내용</span>
             </label>
-
-            <label>
-                <input type="text" name="body" placeholder="Request Content" class="input input-bordered w-full"/>
-            </label>
+            <textarea rows="5" maxlength="10000" name="body" placeholder="내용을 입력해주세요."
+                      class="textarea textarea-bordered"></textarea>
         </div>
 
-        <!-- javascript:; 는 아무것도 하지 않는다는 뜻 -->
-        <button class="btn btn-primary btn-block mt-3" type="submit">
-            게시글 작성
+        <button class="btn btn-primary btn-block" type="submit">
+            <i class="fa-solid fa-pen"></i> 게시글 작성
         </button>
     </form>
 
     <script>
         function submitWriteForm(form) {
-            const inputTitle = form.title;
-            const inputBody = form.body;
+            form.title.value = form.title.value.trim();
 
-            inputTitle.value = inputTitle.value.trim();
-            inputBody.value = inputBody.value.trim();
-
-            const title = inputTitle.value;
-            const body = inputBody.value;
-
-            if (title.length == 0) {
+            if (form.title.value.length == 0) {
                 toastWarning('제목을 입력해주세요.');
-                inputTitle.focus();
+                form.title.focus();
+
                 return;
             }
 
-            if (body.length == 0) {
+            form.body.value = form.body.value.trim();
+
+            if (form.body.value.length == 0) {
                 toastWarning('내용을 입력해주세요.');
-                inputBody.focus();
+                form.body.focus();
+
                 return;
             }
+
             form.submit();
         }
     </script>
 
 </div>
+
+</body>
+
 </html>
