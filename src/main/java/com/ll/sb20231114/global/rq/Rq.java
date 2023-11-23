@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -22,7 +21,6 @@ import org.springframework.web.context.annotation.RequestScope;
 @Getter
 @RequiredArgsConstructor
 public class Rq {
-
     private final HttpServletRequest req;
     private final HttpServletResponse resp;
     private final MemberService memberService;
@@ -31,6 +29,7 @@ public class Rq {
 
     @PostConstruct
     public void init() {
+        // 현재 로그인한 회원의 인증정보를 가져옴
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication.getPrincipal() instanceof User) {
@@ -41,13 +40,12 @@ public class Rq {
     public String redirect(String path, String msg) {
         msg = URLEncoder.encode(msg, StandardCharsets.UTF_8);
         msg += ";ttl=" + (new Date().getTime() + 1000 * 5);
+
         return "redirect:" + path + "?msg=" + msg;
     }
 
-    private Long getMemberId() {
-        return Optional.ofNullable(req.getSession().getAttribute("loginedMemberId"))
-                .map(_id -> (Long) _id)
-                .orElse(0L);
+    private String getMemberUsername() {
+        return user.getUsername();
     }
 
     public boolean isLogined() {
@@ -59,30 +57,31 @@ public class Rq {
             return null;
         }
 
-        if (member == null) {
+        if (member == null)
             member = memberService.findByUsername(getMemberUsername()).get();
-        }
 
         return member;
     }
 
-    public boolean isAdmin() {
-        return user.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-    }
-
-    private String getMemberUsername() {
-        return user.getUsername();
+    public void setSessionAttr(String name, Object value) {
+        req.getSession().setAttribute(name, value);
     }
 
     public <T> T getSessionAttr(String name) {
         return (T) req.getSession().getAttribute(name);
     }
 
-    public void setSessionAttr(String name, Object value) {
-        req.getSession().setAttribute(name, value);
-    }
     public void removeSessionAttr(String name) {
         req.getSession().removeAttribute(name);
+    }
+
+    public boolean isAdmin() {
+        if (!isLogined()) {
+            return false;
+        }
+
+        return user.getAuthorities()
+                .stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
     }
 }
