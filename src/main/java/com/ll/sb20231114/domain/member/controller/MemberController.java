@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,53 +20,30 @@ public class MemberController {
     private final Rq rq;
 
     // join form
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/member/join")
     String showWrite() {
         return "/member/join";
     }
 
     // join
+    @PreAuthorize("isAnonymous()")
     @PostMapping("/member/join")
     String join(@Valid MemberJoinForm form) {
         Member member = memberService.join(form.getUsername(), form.getPassword());
         return rq.redirect("/article/list", "회원가입이 완료되었습니다.");
     }
-
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/member/login")
     String showLogin() {
         return "/member/login";
     }
 
-//    @PostMapping("/member/login")
-//    String login(@Valid MemberJoinForm form, HttpServletRequest req, HttpServletResponse resp) {
-//        Optional<Member> opFindMember = memberService.login(form.username, form.password);
-//
-//        if (opFindMember.isEmpty()) {
-//            throw new IllegalArgumentException("등록된 회원이 없습니다.");
-//        }
-//
-//        Member findMember = opFindMember.get();
-//
-//        if (!findMember.getPassword().equals(form.password)) {
-//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-//        }
-//
-//        rq.setSessionAttr("loginedMemberId", findMember.getId());
-//        rq.setSessionAttr("authorities", findMember.getAuthorities());
-//
-//        return rq.redirect("/article/list", "로그인이 완료되었습니다.");
-//    }
-
     @GetMapping("/member/me")
     String me() {
-        return "/";
+        return "redirect:/";
     }
 
-//    @GetMapping("/member/logout")
-//    String logout() {
-//        SecurityContextHolder.clearContext();
-//        return rq.redirect("/article/list", "로그아웃 되었습니다.");
-//    }
 
     @Data
     public static class MemberJoinForm {

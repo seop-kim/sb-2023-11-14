@@ -3,7 +3,7 @@
 
     <h1 class="text-center"><i class="fa-solid fa-user-plus"></i>  Member Login</h1>
 
-    <form class="flex flex-col gap-2" method="POST" th:action onsubmit="submitJoinForm(this); return false;">
+    <form class="flex flex-col gap-2" method="POST" th:action onsubmit="submitLoginForm(this); return false;">
         <div class="form-control w-full">
             <label class="label">
                 <span class="label-text">NickName</span>
@@ -29,7 +29,7 @@
     </form>
 
     <script>
-        function submitJoinForm(form) {
+        function submitLoginForm(form) {
             const inputUsername = form.username;
             const inputPassword = form.password;
 

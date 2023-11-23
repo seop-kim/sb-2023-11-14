@@ -10,33 +10,38 @@ import java.util.List;
 import java.util.Optional;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/article")
 public class ArticleController {
     private final ArticleService articleService;
     private final Rq rq;
 
     // write form
-    @GetMapping("/article/write")
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/write")
     String showWrite() {
         return "/article/write";
     }
 
     // write
-    @PostMapping("/article/write")
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/write")
     String write(@Valid ArticleController.ArticleWriteForm form) {
         Article article = articleService.write(rq.getMember(), form.getTitle(), form.getBody());
         return rq.redirect("/article/list", "%d번 게시물이 생성되었습니다.".formatted(article.getId()));
     }
 
     // list
-    @GetMapping("/article/list")
+    @GetMapping("/list")
     String showList(Model model) {
         List<Article> articles = articleService.findAll();
         model.addAttribute("articles", articles);
@@ -44,7 +49,7 @@ public class ArticleController {
     }
 
     // article detail
-    @GetMapping("/article/detail/{id}")
+    @GetMapping("/detail/{id}")
     String showDetail(@PathVariable("id") Long id, Model model) {
         Optional<Article> findOne = articleService.findById(id);
         Article article = findOne.get();
@@ -53,7 +58,8 @@ public class ArticleController {
     }
 
     // delete
-    @GetMapping("/article/delete/{id}")
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/delete/{id}")
     String articleDel(@PathVariable Long id) {
         Optional<Article> findOne = articleService.findById(id);
         Article article = findOne.get();
@@ -67,7 +73,8 @@ public class ArticleController {
     }
 
     // modify form
-    @GetMapping("/article/modify/{id}")
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/{id}")
     String modifyForm(@PathVariable Long id, Model model) {
         Optional<Article> findOne = articleService.findById(id);
         Article article = findOne.get();
@@ -81,7 +88,8 @@ public class ArticleController {
     }
 
     // modify
-    @PostMapping("/article/modify")
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify")
     String modify(@Valid ArticleController.MemberModifyForm form) {
         articleService.modify(form.id, form.title, form.body);
         return rq.redirect("/article/detail/%d".formatted(form.getId()), "게시물이 수정되었습니다.");

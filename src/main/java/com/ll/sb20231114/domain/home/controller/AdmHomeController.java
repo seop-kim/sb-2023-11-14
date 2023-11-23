@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AdmHomeController {
     private final Rq rq;
 
-
     @GetMapping("/adm")
     public String showMain() {
         return "/home/adm/main";
+
     }
 
     @GetMapping("/adm/home/about")
