@@ -13,9 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -59,7 +61,7 @@ public class ArticleController {
 
     // delete
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     String articleDel(@PathVariable Long id) {
         Optional<Article> findOne = articleService.findById(id);
         Article article = findOne.get();
@@ -89,7 +91,7 @@ public class ArticleController {
 
     // modify
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/modify")
+    @PutMapping("/modify/{id}")
     String modify(@Valid ArticleController.MemberModifyForm form) {
         articleService.modify(form.id, form.title, form.body);
         return rq.redirect("/article/detail/%d".formatted(form.getId()), "게시물이 수정되었습니다.");

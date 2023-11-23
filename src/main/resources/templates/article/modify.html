@@ -5,6 +5,7 @@
 
     <form class="flex flex-col gap-2" th:action action="/article/modify" method="POST" onsubmit="submitModifyForm(this); return false;">
         <input type="hidden" name="id" th:value="${article.id}">
+        <input type="hidden" name="_method" value="PUT">
         <div class="form-control w-full">
             <label class="label">
                 <span class="label-text">Title</span>
