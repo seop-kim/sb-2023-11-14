@@ -1,7 +1,15 @@
 <html layout:decorate="~{global/layout}">
+<head>
+    <title th:text="|SIMPLE - 게시글 수정 - ${article.id}. ${article.title}|"></title>
+</head>
+
 <div layout:fragment="content" class="p-2">
 
-    <h1 class="text-center"><i class="fa-regular fa-pen-to-square"></i> Article Modify</h1>
+
+    <h1 class="font-bold mb-2 text-center">
+        <i class="fa-regular fa-pen-to-square"></i> Article Modify
+    </h1>
+
 
     <form class="flex flex-col gap-2" th:action action="/article/modify" method="POST" onsubmit="submitModifyForm(this); return false;">
         <input type="hidden" name="id" th:value="${article.id}">
@@ -28,7 +36,7 @@
 
         <!-- javascript:; 는 아무것도 하지 않는다는 뜻 -->
         <button class="btn btn-primary btn-block mt-3" type="submit">
-            수정
+            <i class="fa-regular fa-pen-to-square"></i> 게시글 수정
         </button>
     </form>
 

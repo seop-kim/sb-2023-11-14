@@ -1,4 +1,7 @@
 <html layout:decorate="~{global/layout}">
+<head>
+    <title th:text="|SIMPLE - 글 내용 - ${article.id}. ${article.title}|"></title>
+</head>
 <div layout:fragment="content" class="p-2">
 
     <h1 class="text-center"><i class="fa-regular fa-newspaper"></i> Article Detail</h1>
