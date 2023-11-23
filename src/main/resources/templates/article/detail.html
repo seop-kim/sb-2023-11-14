@@ -16,7 +16,7 @@
 
     <ul class="flex gap-5 justify-center">
         <li><a th:if="${@articleService.canModify(@rq.member, article)}" th:href="|/article/modify/${article.id}|">수정</a></li>
-        <li><a method="POST" th:if="${@articleService.canDelete(@rq.member, article)}" onClick="return confirm('정말로 삭제하시겠습니까?')" th:href="|/article/delete/${article.id}|">삭제</a></li>
+        <li><a method="DELETE" th:if="${@articleService.canDelete(@rq.member, article)}" onClick="return confirm('정말로 삭제하시겠습니까?')" th:href="|/article/delete/${article.id}|">삭제</a></li>
     </ul>
 </div>
 </html>
