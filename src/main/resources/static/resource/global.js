@@ -19,15 +19,20 @@ toastr.options = {
 function parseMsg(msg) {
     return msg.split(";ttl=");
 }
+
 function toastWarning(msg) {
     const [_msg, ttl] = parseMsg(msg);
+
     if (ttl && parseInt(ttl) < new Date().getTime()) return;
+
     toastr["warning"](_msg, "경고");
 }
 
 function toastNotice(msg) {
     const [_msg, ttl] = parseMsg(msg);
+
     if (ttl && parseInt(ttl) < new Date().getTime()) return;
+
     toastr["success"](_msg, "성공");
 }
 
@@ -74,7 +79,7 @@ $(function () {
         return false;
     });
 
-    $('a[method="POST"][onclick]').each(function (index, el) {
+    $('a[method="POST"][onclick], a[method="DELETE"][onclick], a[method="PUT"][onclick]').each(function (index, el) {
         const onclick = $(el).attr('onclick');
 
         $(el).removeAttr('onclick');
