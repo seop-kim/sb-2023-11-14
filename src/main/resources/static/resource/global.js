@@ -41,7 +41,7 @@ $(function () {
         if (value) $(el).val(value);
     });
 
-    $('a[method="DELETE"], a[method="POST"], a[method="PUT"]').click(function (e) {
+    $('a[method="POST"]').click(function (e) {
         if ($(this).attr('onclick-after')) {
             let onclickAfter = null;
 
@@ -53,21 +53,14 @@ $(function () {
         const action = $(this).attr('href');
         const csfTokenValue = $("meta[name='_csrf']").attr("content");
 
-        const formHtml = `
-        <form action="${action}" method="POST">
-            <input type="hidden" name="_csrf" value="${csfTokenValue}">
-            <input type="hidden" name="_method" value="${$(this).attr('method')}">
-        </form>
-        `;
-
-        const $form = $(formHtml);
+        const $form = $(`<form action="${action}" method="POST"><input type="hidden" name="_csrf" value="${csfTokenValue}"></form>`);
         $('body').append($form);
         $form.submit();
 
         return false;
     });
 
-    $('a[method="POST"][onclick], a[method="DELETE"][onclick], a[method="PUT"][onclick]').each(function (index, el) {
+    $('a[method="POST"][onclick]').each(function (index, el) {
         const onclick = $(el).attr('onclick');
 
         $(el).removeAttr('onclick');
