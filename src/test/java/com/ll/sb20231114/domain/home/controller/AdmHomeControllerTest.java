@@ -2,6 +2,7 @@ package com.ll.sb20231114.domain.home.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -42,6 +43,8 @@ class ArticleControllerTest {
                 .perform(get("/article/list"))
                 .andDo(print());
 
+        Article article = articleService.findLatest().get();
+
         // THEN
         resultActions
                 .andExpect(status().is2xxSuccessful())
@@ -51,14 +54,8 @@ class ArticleControllerTest {
                         게시글 목록
                         """.stripIndent().trim())))
                 .andExpect(content().string(containsString("""
-                        3번 : 제목3
-                        """.stripIndent().trim())))
-                .andExpect(content().string(containsString("""
-                        2번 : 제목2
-                        """.stripIndent().trim())))
-                .andExpect(content().string(containsString("""
-                        1번 : 제목1
-                        """.stripIndent().trim())));
+                       %d번 : %s
+                        """.formatted(article.getId(), article.getTitle()).stripIndent().trim())));
     }
 
     // GET /article/detail/{id}
@@ -143,6 +140,17 @@ class ArticleControllerTest {
     
 
     // GET /article/modify/{id}
+    @Test
+    @DisplayName("작성자가 아니라면 수정폼을 볼 수 없다.")
+    @WithUserDetails("user1")
+    void t5() throws Exception {
+        // WHEN
+        assertThrows(Exception.class, () -> {
+            ResultActions resultActions = mvc
+                    .perform(get("/article/modify/1"))
+                    .andDo(print());
+        });
+    }
     // PUT /article/modify/{id}
     // DELETE /article/delete/{id}
 }
