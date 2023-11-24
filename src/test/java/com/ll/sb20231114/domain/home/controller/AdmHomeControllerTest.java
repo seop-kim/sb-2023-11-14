@@ -151,6 +151,39 @@ class ArticleControllerTest {
                     .andDo(print());
         });
     }
+
+    // GET /article/modify/{id}
+    @Test
+    @DisplayName("게시물 수정폼 페이지를 보여준다.")
+    @WithUserDetails("admin")
+    void t6() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(get("/article/modify/1"))
+                .andDo(print());
+
+        Article article = articleService.findById(1L).get();
+
+        // THEN
+        resultActions
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(handler().handlerType(ArticleController.class))
+                .andExpect(handler().methodName("modifyForm"))
+                .andExpect(content().string(containsString("""
+                        게시글 수정
+                        """.stripIndent().trim())))
+                .andExpect(content().string(containsString("""
+                        <input type="text" name="title" value="%s"
+                        """.formatted(article.getTitle()).stripIndent().trim())))
+                .andExpect(content().string(containsString("""
+                        <textarea name="body"
+                        """.formatted(article.getBody()).stripIndent().trim())))
+                .andExpect(content().string(containsString("""
+                        >%s</textarea>
+                        """.formatted(article.getBody()).stripIndent().trim())))
+        ;
+    }
+
     // PUT /article/modify/{id}
     // DELETE /article/delete/{id}
 }
