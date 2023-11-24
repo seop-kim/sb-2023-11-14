@@ -92,9 +92,11 @@ public class ArticleController {
     // modify
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/modify/{id}")
-    String modify(@Valid ArticleController.MemberModifyForm form) {
-        articleService.modify(form.id, form.title, form.body);
-        return rq.redirect("/article/detail/%d".formatted(form.getId()), "게시물이 수정되었습니다.");
+    String modify(@PathVariable long id, @Valid MemberModifyForm modifyForm) {
+        Article article = articleService.findById(id).get();
+        if (!articleService.canModify(rq.getMember(), article)) throw new RuntimeException("수정권한이 없습니다.");
+        articleService.modify(article, modifyForm.title, modifyForm.body);
+        return rq.redirect("/article/list", "%d번 게시물 수정되었습니다.".formatted(id));
     }
 
     @Data

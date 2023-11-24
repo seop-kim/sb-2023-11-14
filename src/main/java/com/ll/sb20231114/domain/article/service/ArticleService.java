@@ -36,10 +36,7 @@ public class ArticleService {
         articleRepository.delete(article);
     }
 
-    public void modify(Long id, String title, String body) {
-        Optional<Article> findOne = findById(id);
-        Article article = findOne.get();
-
+    public void modify(Article article, String title, String body) {
         article.articleUpdate(title, body);
     }
 
