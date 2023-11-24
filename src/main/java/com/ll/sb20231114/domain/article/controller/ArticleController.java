@@ -39,7 +39,7 @@ public class ArticleController {
     @PostMapping("/write")
     String write(@Valid ArticleController.ArticleWriteForm form) {
         Article article = articleService.write(rq.getMember(), form.getTitle(), form.getBody());
-        return rq.redirect("/article/list", "%d번 게시물이 생성되었습니다.".formatted(article.getId()));
+        return rq.redirect("/", "%d번 게시물이 생성되었습니다.".formatted(article.getId()));
     }
 
     // list
@@ -71,7 +71,7 @@ public class ArticleController {
         }
 
         articleService.delete(article);
-        return rq.redirect("/article/list", "%d번 게시물이 삭제되었습니다.".formatted(id));
+        return rq.redirect("/", "%d번 게시물이 삭제되었습니다.".formatted(id));
     }
 
     // modify form
@@ -96,7 +96,7 @@ public class ArticleController {
         Article article = articleService.findById(id).get();
         if (!articleService.canModify(rq.getMember(), article)) throw new RuntimeException("수정권한이 없습니다.");
         articleService.modify(article, modifyForm.title, modifyForm.body);
-        return rq.redirect("/article/list", "%d번 게시물 수정되었습니다.".formatted(id));
+        return rq.redirect("/", "%d번 게시물 수정되었습니다.".formatted(id));
     }
 
     @Data
