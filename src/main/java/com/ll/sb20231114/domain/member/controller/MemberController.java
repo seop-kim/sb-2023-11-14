@@ -29,8 +29,8 @@ public class MemberController {
     @PreAuthorize("isAnonymous()")
     @PostMapping("/member/join")
     String join(@Valid MemberJoinForm form) {
-        memberService.join(form.getUsername(), form.getPassword());
-        return rq.redirect("/article/list", "회원가입이 완료되었습니다.");
+        memberService.join(form.username, form.password);
+        return rq.redirect("/member/login", "회원가입이 완료되었습니다.");
     }
     @PreAuthorize("isAnonymous()")
     @GetMapping("/member/login")

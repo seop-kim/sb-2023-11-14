@@ -48,4 +48,9 @@ public class MemberRepository {
                 .findFirst();
     }
 
+    public Optional<Member> findLatest() {
+        return Optional.ofNullable(
+                members.isEmpty() ? null : members.getLast()
+        );
+    }
 }
