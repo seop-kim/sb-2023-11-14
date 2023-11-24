@@ -2,6 +2,7 @@ package com.ll.sb20231114.global.rq;
 
 import com.ll.sb20231114.domain.member.entity.Member;
 import com.ll.sb20231114.domain.member.service.MemberService;
+import com.ll.sb20231114.global.rsData.RsData;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -54,6 +55,12 @@ public class Rq {
         return "redirect:" + path + "?msg=" + msg;
     }
 
+    public String redirect(String path, RsData<?> rs) {
+        return redirect(path, rs.getMsg());
+    }
+
+
+
     private String getMemberUsername() {
         return user.getUsername();
     }
@@ -97,7 +104,17 @@ public class Rq {
     }
 
     public String historyBack(String msg) {
+        resp.setStatus(400);
         req.setAttribute("msg", msg);
         return "global/js";
+    }
+
+    public String historyBack(RsData<?> rs) {
+        return historyBack(rs.getMsg());
+    }
+
+    public String redirectOrBack(String url, RsData<?> rs) {
+        if (rs.isFail()) return historyBack(rs);
+        return redirect(url, rs);
     }
 }

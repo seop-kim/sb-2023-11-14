@@ -2,6 +2,7 @@ package com.ll.sb20231114.domain.member.service;
 
 import com.ll.sb20231114.domain.member.entity.Member;
 import com.ll.sb20231114.domain.member.repository.MemberRepository;
+import com.ll.sb20231114.global.rsData.RsData;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +15,9 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Member join(String username, String password) {
+    public RsData<Member> join(String username, String password) {
         if (findByUsername(username).isPresent()) {
-            return null;
+            return new RsData<>("F-1", "이미 사용중인 아이디입니다.");
         }
 
         password = passwordEncoder.encode(password);
@@ -24,7 +25,11 @@ public class MemberService {
 
         memberRepository.save(member);
 
-        return member;
+        return new RsData<>(
+                "S-1",
+                "%s님 환영합니다.".formatted(member.getUsername()),
+                member
+        );
     }
 
     public Member findLastMember() {

@@ -3,6 +3,7 @@ package com.ll.sb20231114.domain.member.controller;
 import com.ll.sb20231114.domain.member.entity.Member;
 import com.ll.sb20231114.domain.member.service.MemberService;
 import com.ll.sb20231114.global.rq.Rq;
+import com.ll.sb20231114.global.rsData.RsData;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,14 +31,11 @@ public class MemberController {
     @PreAuthorize("isAnonymous()")
     @PostMapping("/member/join")
     String join(@Valid MemberJoinForm form) {
-        Member member = memberService.join(form.username, form.password);
+        RsData<Member> joinRs = memberService.join(form.username, form.password);
 
-        if ( member == null ) {
-            return rq.historyBack("이미 존재하는 회원입니다.");
-        }
-
-        return rq.redirect("/member/login", "회원가입이 완료되었습니다.");
+        return rq.redirectOrBack("/member/login", joinRs);
     }
+
     @PreAuthorize("isAnonymous()")
     @GetMapping("/member/login")
     String showLogin() {
