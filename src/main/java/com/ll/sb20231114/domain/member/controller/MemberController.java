@@ -21,7 +21,7 @@ public class MemberController {
     // join form
     @PreAuthorize("isAnonymous()")
     @GetMapping("/member/join")
-    String showWrite() {
+    String showJoin() {
         return "/member/join";
     }
 
