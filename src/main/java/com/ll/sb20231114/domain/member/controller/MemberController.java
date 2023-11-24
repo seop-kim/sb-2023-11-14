@@ -33,7 +33,7 @@ public class MemberController {
         Member member = memberService.join(form.username, form.password);
 
         if ( member == null ) {
-            return "/member/join";
+            return rq.historyBack("이미 존재하는 회원입니다.");
         }
 
         return rq.redirect("/member/login", "회원가입이 완료되었습니다.");

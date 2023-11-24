@@ -95,4 +95,9 @@ public class Rq {
                 .stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
     }
+
+    public String historyBack(String msg) {
+        req.setAttribute("msg", msg);
+        return "global/js";
+    }
 }
