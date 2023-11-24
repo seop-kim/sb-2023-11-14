@@ -37,7 +37,14 @@ public class ArticleController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/write2")
     String showWrite2() {
-        return "article/article/write2";
+        return "/article/write2";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/write2")
+    String write2(@Valid ArticleCreateForm articleCreateForm) {
+        Article article = articleService.write(rq.getMember(), articleCreateForm.getTitle(), articleCreateForm.getBody());
+        return rq.redirect("/", "%d번 게시물 생성되었습니다.".formatted(article.getId()));
     }
 
     // write
@@ -52,7 +59,9 @@ public class ArticleController {
     @GetMapping("/list")
     String showList(Model model) {
         List<Article> articles = articleService.findAll();
+
         model.addAttribute("articles", articles);
+
         return "/article/list";
     }
 
@@ -126,6 +135,16 @@ public class ArticleController {
 
         @NotBlank(message = "body is not null")
         @NotNull
+        private String body;
+    }
+
+    @Data
+    public static class ArticleCreateForm {
+        @NotBlank
+        @NotBlank(message = "제목을 입력해주세요.")
+        private String title;
+        @NotBlank
+        @NotBlank(message = "내용을 입력해주세요.")
         private String body;
     }
 }
