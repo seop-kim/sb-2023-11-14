@@ -1,4 +1,4 @@
-package com.ll.sb20231114.domain.home.controller;
+package com.ll.sb20231114.domain.article;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
