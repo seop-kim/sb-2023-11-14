@@ -14,14 +14,13 @@ public class NotProd {
     @Bean
     public ApplicationRunner initNotProd(MemberService memberService, ArticleService articleService) {
         return args -> {
-            Member admin = memberService.join("admin", "1234");
-            Member member1 = memberService.join("user1", "1234");
-            Member member2 = memberService.join("user2", "1234");
+            Member memberAdmin = memberService.join("admin", "1234");
+            Member memberUser1 = memberService.join("user1", "1234");
+            Member memberUser2 = memberService.join("user2", "1234");
 
-            articleService.write(admin, "test1", "test1");
-            articleService.write(member1, "test2", "test2");
-            articleService.write(member2, "test3", "test3");
-            System.out.println("test data init");
+            articleService.write(memberAdmin, "제목1", "내용1");
+            articleService.write(memberUser1, "제목2", "내용2");
+            articleService.write(memberUser1, "제목3", "내용3");
         };
     }
 }
