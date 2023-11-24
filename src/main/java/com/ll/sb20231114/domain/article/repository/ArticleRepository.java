@@ -40,6 +40,12 @@ public class ArticleRepository {
                 .findFirst();
     }
 
+    public Optional<Article> findLatest() {
+        return Optional.ofNullable(
+                articles.isEmpty() ? null : articles.getLast()
+        );
+    }
+
     public void delete(Article article) {
         articles.remove(article);
     }
