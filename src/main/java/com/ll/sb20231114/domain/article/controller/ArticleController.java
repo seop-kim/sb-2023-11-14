@@ -34,6 +34,12 @@ public class ArticleController {
         return "/article/write";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/write2")
+    String showWrite2() {
+        return "article/article/write2";
+    }
+
     // write
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
