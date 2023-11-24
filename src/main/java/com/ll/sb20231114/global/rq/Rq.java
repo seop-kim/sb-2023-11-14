@@ -80,28 +80,6 @@ public class Rq {
         return member;
     }
 
-    public void setSessionAttr(String name, Object value) {
-        req.getSession().setAttribute(name, value);
-    }
-
-    public <T> T getSessionAttr(String name) {
-        return (T) req.getSession().getAttribute(name);
-    }
-
-    public void removeSessionAttr(String name) {
-        req.getSession().removeAttribute(name);
-    }
-
-    public boolean isAdmin() {
-        if (!isLogined()) {
-            return false;
-        }
-
-        return user.getAuthorities()
-                .stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-    }
-
     public String historyBack(String msg) {
         resp.setStatus(400);
         req.setAttribute("msg", msg);
