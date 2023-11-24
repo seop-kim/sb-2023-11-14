@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
@@ -15,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.ll.sb20231114.domain.article.controller.ArticleController;
 import com.ll.sb20231114.domain.article.entity.Article;
 import com.ll.sb20231114.domain.article.service.ArticleService;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -184,6 +187,56 @@ class ArticleControllerTest {
         ;
     }
 
+    @Test
+    @DisplayName("게시물 수정폼 처리")
+    @WithUserDetails("admin")
+    void t7() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(
+                        put("/article/modify/1")
+                                .with(csrf())
+                                .param("title", "제목 new")
+                                .param("body", "내용 new")
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions
+                .andExpect(status().is3xxRedirection())
+                .andExpect(handler().handlerType(ArticleController.class))
+                .andExpect(handler().methodName("modify"))
+                .andExpect(redirectedUrlPattern("/article/list?msg=**"));
+
+        Article article = articleService.findById(1L).get();
+
+        assertThat(article.getTitle()).isEqualTo("제목 new");
+        assertThat(article.getBody()).isEqualTo("내용 new");
+    }
+
     // PUT /article/modify/{id}
     // DELETE /article/delete/{id}
+    @Test
+    @DisplayName("게시물 삭제")
+    @WithUserDetails("admin")
+    void t8() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(
+                        delete("/article/delete/1")
+                                .with(csrf())
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions
+                .andExpect(status().is3xxRedirection())
+                .andExpect(handler().handlerType(ArticleController.class))
+                .andExpect(handler().methodName("articleDel"))
+                .andExpect(redirectedUrlPattern("/article/list?msg=**"));
+
+        Optional<Article> optionalArticle = articleService.findById(1L);
+
+        assertThat(optionalArticle.isEmpty()).isEqualTo(true);
+    }
 }
