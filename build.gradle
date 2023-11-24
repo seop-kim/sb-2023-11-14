@@ -38,10 +38,11 @@ dependencies {
             'org.springframework.security:spring-security-test'
     )
 
+    // lombok
     compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
 
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.named('bootBuildImage') {
