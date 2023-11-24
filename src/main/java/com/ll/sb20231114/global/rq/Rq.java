@@ -60,7 +60,6 @@ public class Rq {
     }
 
 
-
     private String getMemberUsername() {
         return user.getUsername();
     }
@@ -114,7 +113,9 @@ public class Rq {
     }
 
     public String redirectOrBack(String url, RsData<?> rs) {
-        if (rs.isFail()) return historyBack(rs);
+        if (rs.isFail()) {
+            return historyBack(rs);
+        }
         return redirect(url, rs);
     }
 }

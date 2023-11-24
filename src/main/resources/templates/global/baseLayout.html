@@ -36,6 +36,18 @@
     if (queryParams.msg) {
         toastNotice(queryParams.msg);
     }
+
+    // 일부 브라우저에서 발생할 수 있는 문제를 처리하기 위해 bind로 감싼다.
+    $(window).bind("pageshow", function (event) {
+        // 중복된 이름일 경우 js.html 에서 localStorage에 메세지를 저장시켜서 넘겨준다.
+        // 데이터를 저장한 뒤 메세지가 있다면 중복된 이름 메세지를 사용자에게 출력한다.
+        const historyBackMsg = localStorage.getItem("historyBackMsg");
+
+        if(historyBackMsg){
+            toastWarning(historyBackMsg);
+            localStorage.clear();
+        }
+    });
 </script>
 
 <main class="p-4">
