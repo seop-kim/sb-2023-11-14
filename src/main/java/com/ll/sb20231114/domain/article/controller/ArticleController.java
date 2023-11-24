@@ -77,7 +77,7 @@ public class ArticleController {
     // delete
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/delete/{id}")
-    String articleDel(@PathVariable Long id) {
+    String articleDel(@PathVariable("id") Long id) {
         Optional<Article> findOne = articleService.findById(id);
         Article article = findOne.get();
 
@@ -92,7 +92,7 @@ public class ArticleController {
     // modify form
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    String modifyForm(@PathVariable Long id, Model model) {
+    String modifyForm(@PathVariable("id") Long id, Model model) {
         Optional<Article> findOne = articleService.findById(id);
         Article article = findOne.get();
 
@@ -107,7 +107,7 @@ public class ArticleController {
     // modify
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/modify/{id}")
-    String modify(@PathVariable long id, @Valid MemberModifyForm modifyForm) {
+    String modify(@PathVariable("id") Long id, @Valid MemberModifyForm modifyForm) {
         Article article = articleService.findById(id).get();
         if (!articleService.canModify(rq.getMember(), article)) throw new RuntimeException("수정권한이 없습니다.");
         articleService.modify(article, modifyForm.title, modifyForm.body);

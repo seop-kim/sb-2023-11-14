@@ -7,21 +7,20 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service // 저는 단 한번만 생성되고, 그 이후에는 재사용되는 객체입니다.
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
+    @Transactional
     public Article write(Member author, String title, String body) {
         Article article = new Article(author, title, body);
         articleRepository.save(article);
 
         return article;
-    }
-
-    public Article findLastArticle() {
-        return articleRepository.findLastArticle();
     }
 
     public List<Article> findAll() {
@@ -32,14 +31,17 @@ public class ArticleService {
         return articleRepository.findById(id);
     }
 
+    @Transactional
     public void delete(Article article) {
         articleRepository.delete(article);
     }
 
+    @Transactional
     public void modify(Article article, String title, String body) {
         article.articleUpdate(title, body);
     }
 
+    @Transactional
     public boolean canModify(Member actor, Article article) {
         if (actor == null) {
             return false;
@@ -47,6 +49,7 @@ public class ArticleService {
         return article.getAuthor().equals(actor);
     }
 
+    @Transactional
     public boolean canDelete(Member actor, Article article) {
         if (actor == null) {
             return false;
@@ -60,6 +63,6 @@ public class ArticleService {
     }
 
     public Optional<Article> findLatest() {
-        return articleRepository.findLatest();
+        return articleRepository.findFirstByOrderByIdDesc();
     }
 }

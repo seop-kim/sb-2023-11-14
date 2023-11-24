@@ -8,13 +8,16 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public RsData<Member> join(String username, String password) {
         if (findByUsername(username).isPresent()) {
             return new RsData<>("F-1", "이미 사용중인 아이디입니다.");
@@ -32,10 +35,6 @@ public class MemberService {
         );
     }
 
-    public Member findLastMember() {
-        return memberRepository.findLastMember();
-    }
-
     public List<Member> findAll() {
         return memberRepository.findAll();
     }
@@ -44,10 +43,12 @@ public class MemberService {
         return memberRepository.findById(id);
     }
 
+    @Transactional
     public void delete(Long id) {
-        memberRepository.delete(id);
+//        memberRepository.delete(id);
     }
 
+    @Transactional
     public void modify(Long id, String username, String password) {
         Optional<Member> findOne = findById(id);
         Member member = findOne.get();
@@ -56,14 +57,14 @@ public class MemberService {
     }
 
     public Optional<Member> login(String username, String password) {
-        return memberRepository.findByUserName(username);
+        return memberRepository.findByUsername(username);
     }
 
     public Optional<Member> findByUsername(String username) {
-        return memberRepository.findByUserName(username);
+        return memberRepository.findByUsername(username);
     }
 
     public Optional<Member> findLatest() {
-        return memberRepository.findLatest();
+        return memberRepository.findFirstByOrderByIdDesc();
     }
 }
